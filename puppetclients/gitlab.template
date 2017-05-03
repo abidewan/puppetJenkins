@@ -1,0 +1,138 @@
+{
+   "AWSTemplateFormatVersion":"2010-09-09",
+   "Description":"CloudFormation Template to provision a Jenkins instance",
+   "Parameters":{
+      "KeyName":{
+         "Description":"Name of an existing EC2 KeyPair to enable SSH access to the instances",
+         "Type":"String",
+         "Default":"pair01",
+         "MinLength":"1",
+         "MaxLength":"64",
+         "AllowedPattern":"[-_ a-zA-Z0-9]*",
+         "ConstraintDescription":"Can contain only alphanumeric characters, spaces, dashes and underscores."
+      },
+      "Subnet":{
+         "Description":"Subnet ID",
+         "Type":"String",
+         "Default":"subnet-fe621888",
+         "ConstraintDescription":"must be the id of an existing Subnet."
+      },
+      "PrivateBucket":{
+         "Description":"S3 bucket for storing credentials",
+         "Type":"String",
+         "Default":"ditcpmedcreds-abi02",
+         "ConstraintDescription":"Must be a valid S3 Bucket"
+      },
+      "PublicBucket":{
+         "Description":"S3 bucket for storing build artifacts",
+         "Type":"String",
+         "Default":"puppet-abi02",
+         "ConstraintDescription":"Must be a valid S3 Bucket"
+      },
+      "InstanceType":{
+         "Description":"DevClient01 EC2 instance type",
+         "Type":"String",
+         "Default":"t2.micro",
+         "ConstraintDescription":"Must be a valid EC2 instance type."
+      }
+   },
+   "Resources":{
+      "DevClient01":{
+         "Type":"AWS::EC2::Instance",
+         "Metadata":{
+            "AWS::CloudFormation::Init":{
+               "config":{
+                  "packages":{
+                     "apt":{
+                        "tomcat6":[
+
+                        ],
+                        "ntp":[
+[B
+                        ],
+                        "apache2":[
+
+                        ],
+                        "awscli":[
+
+                        ],
+                        "puppet-agent":[
+
+                        ],
+                        "gitlab":[
+
+                        ]
+                     }
+                  },
+                  "files":{
+                     "/etc/default/puppetserver":{
+                        "source":"https://s3-ap-southeast-2.amazonaws.com/puppet-abi/scripts/puppetserver"
+                     }
+                  }
+               }
+            }
+         },
+         "Properties":{
+            "ImageId":"ami-807876e3",
+            "NetworkInterfaces":[
+               {
+                  "AssociatePublicIpAddress":true,
+                  "DeleteOnTermination":true,
+                  "DeviceIndex":"0",
+                  "SubnetId":{
+                     "Ref":"Subnet"
+                  },
+                  "GroupSet":[
+                     "sg-486a112f"
+                  ]
+               }
+            ],
+            "IamInstanceProfile":"S3_Access",
+            "InstanceType":{
+               "Ref":"InstanceType"
+            },
+            "KeyName":"pair01",
+            "Tags":[
+               {
+                  "Key":"Name",
+                  "Value":"DevClient01"
+               }
+            ],
+            "UserData":{
+               "Fn::Base64":{
+                  "Fn::Join":[
+                     "",
+                     [
+                        "#!/bin/bash -ex\n",
+                        "echo 127.0.0.1 devclient01 devclient01.labs.com >> /etc/hosts\n",
+                        "echo devclient01>/etc/hostname\n",
+                        "hostname devclient01\n",
+  			"apt-get install curl openssh-server ca-certificates postfix\n",
+			"curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash\n",
+			"apt-get install gitlab-ce\n",
+			"gitlab-ctl reconfigure\n",
+	                "cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
+                        "dpkg -i puppetlabs-release-pc1-trusty.deb\n",
+                        "apt-get update\n",
+                        "apt-get -y install python-setuptools\n",
+                        "mkdir aws-cfn-bootstrap-latest\n",
+                        "curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz | tar xz -C aws-cfn-bootstrap-latest --strip-components 1\n",
+                        "easy_install aws-cfn-bootstrap-latest\n",
+                        "/usr/local/bin/cfn-init --stack ",
+                        {
+                           "Ref":"AWS::StackName"
+                        },
+                        " --resource DevClient01",
+                        " --region ",
+                        {
+                           "Ref":"AWS::Region"
+                        },
+                        "\n"
+                     ]
+                  ]
+               }
+            }
+         }
+      }
+   }
+}
