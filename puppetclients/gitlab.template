@@ -1,6 +1,6 @@
 {
    "AWSTemplateFormatVersion":"2010-09-09",
-   "Description":"CloudFormation Template to provision a puppetclient",
+   "Description":"CloudFormation Template to provision a puppetclient and gitlab",
    "Parameters":{
       "KeyName":{
          "Description":"Name of an existing EC2 KeyPair to enable SSH access to the instances",
