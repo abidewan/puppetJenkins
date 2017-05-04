@@ -1,4 +1,4 @@
-{
+[A{
    "AWSTemplateFormatVersion":"2010-09-09",
    "Description":"CFT provision a puppetclient and gitlab",
    "Parameters":{
@@ -119,6 +119,9 @@
 			"hostname devclient02.labs.com\n",
                         "mkdir ~/.aws\n",
 			"touch ~/.aws/conf\n",
+			"echo [default]>>~/.aws/conf\n",
+			"echo output = json>>~/.aws/conf\n",	
+			"echo region = ap-southeast-2>>~/.aws/conf\n",
 			"cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
                         "dpkg -i puppetlabs-release-pc1-trusty.deb\n",
                         "apt-get update\n",
