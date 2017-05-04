@@ -56,13 +56,26 @@
                         "awscli":[
 
                         ],
-			"puppet-agent":[
+                        "puppet-agent":[
+
                         ]
                      }
                   },
                   "files":{
                      "/etc/puppetlabs/puppet/puppet.conf":{
                         "source":"https://s3-ap-southeast-2.amazonaws.com/puppet-abi02/scripts/puppetserver"
+                     },
+                     "~/.aws/conf":{
+                        "content":{
+                           "Fn::Join":[
+                              "",
+                              [
+                                 "[default]\n",
+                                 "output = json\n",
+                                 "region = ap-southeast-2\n"
+                              ]
+                           ]
+                        }
                      }
                   }
                }
@@ -102,9 +115,9 @@
                         "#!/bin/bash -ex\n",
                         "echo 127.0.0.1 devclient02 devclient02.labs.com >> /etc/hosts\n",
                         "echo devclient02 devclient02.labs.com>/etc/hostname\n",
-			"echo 172.31.34.130 puppet puppet.labs.com\n",
+                        "echo 172.31.34.130 puppet puppet.labs.com\n",
                         "hostname devclient02.labs.com\n",
-			"cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
+                        "cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
                         "dpkg -i puppetlabs-release-pc1-trusty.deb\n",
                         "apt-get update\n",
                         "apt-get -y install python-setuptools\n",
