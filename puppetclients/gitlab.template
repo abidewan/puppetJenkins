@@ -71,25 +71,25 @@
                                  "server = puppet\n",
                                  "environment = development\n",
                                  "runinterval = 1h\n",
-                                 "strict_variables = true\n",
+                                 "strict_variables = true\n\n",
                                  "[master]\n",
                                  "vardir = /opt/puppetlabs/server/data/puppetserver\n",
-                                 "location / {\n",
-                                 "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n",
-                                 "proxy_set_header Host $http_host;\n",
-                                 "proxy_redirect off;\n\n",
-                                 "if (!-f $request_filename) {\n",
-                                 "proxy_pass http://jenkins;\n",
-                                 "break;\n",
-                                 "}\n",
-                                 "}\n",
-                                 "}\n"
+                                 "logdir = /var/log/puppetlabs/puppetserver\n",
+                                 "rundir = /var/run/puppetlabs/puppetserver\n",
+                                 "pidfile = /var/run/puppetlabs/puppetserver/puppetserver.pid\n",
+                                 "codedir = /etc/puppetlabs/code\n"
                               ]
                            ]
                         },
                         "mode":"000755",
                         "owner":"root",
                         "group":"root"
+                     }
+                  },
+                  "services":{
+                     "puppet":{
+                        "enabled":"true",
+                        "ensureRunning":"true"
                      }
                   }
                }
