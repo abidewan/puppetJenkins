@@ -1,6 +1,6 @@
 {
    "AWSTemplateFormatVersion":"2010-09-09",
-   "Description":"provision a puppetclient and gitlab",
+   "Description":"CFT provision a puppetclient and gitlab",
    "Parameters":{
       "KeyName":{
          "Description":"Name of an existing EC2 KeyPair to enable SSH access to the instances",
@@ -56,6 +56,8 @@
                         "awscli":[
 
                         ],
+			"gitlab-ce":[
+			],	
                         "puppet-agent":[
 
                         ]
@@ -106,7 +108,6 @@
                         "hostname devclient01\n",
   			"apt-get -y install curl openssh-server ca-certificates postfix\n",
 			"curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash\n",
-			"apt-get -y install gitlab-ce\n",
 	                "cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
                         "dpkg -i puppetlabs-release-pc1-trusty.deb\n",
                         "apt-get update\n",
