@@ -56,13 +56,13 @@
                         "awscli":[
 
                         ],
-"puppet-agent":[
+			"puppet-agent":[
                         ]
                      }
                   },
                   "files":{
-                     "/etc/default/puppetserver":{
-                        "source":"https://s3-ap-southeast-2.amazonaws.com/puppet-abi/scripts/puppetserver"
+                     "/etc/puppetlabs/puppet/puppet.conf":{
+                        "source":"https://s3-ap-southeast-2.amazonaws.com/puppet-abi02/scripts/puppetserver"
                      }
                   }
                }
@@ -101,26 +101,10 @@
                      [
                         "#!/bin/bash -ex\n",
                         "echo 127.0.0.1 devclient02 devclient02.labs.com >> /etc/hosts\n",
-                        "echo 172.31.34.130 puppet puppet.labs.com >> /etc/hosts\n",
-			"echo devclient02.labs.com>/etc/hostname\n",
-                        "hostname devclient02\n",
-"echo \"[main]\" >> /etc/puppetlabs/puppet/puppet.conf",
-{
-"Fn::Join": [
-
-"",
-[
-"echo \"server = puppet\n",
-"echo \"environment = development\n",
-"echo \"logdir = /var/log/puppetlabs/puppetserver\n",
-"rundir = /var/run/puppetlabs/puppetserver\n",
-"pidfile = /var/run/puppetlabs/puppetserver/puppetserver.pid\n",
-"codedir = /etc/puppetlabs/code\n",
-"\">> /etc/puppetlabs/puppet/puppet.conf"
-]
-]
-},
-"cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
+                        "echo devclient02 devclient02.labs.com>/etc/hostname\n",
+			"echo 172.31.34.130 puppet puppet.labs.com\n",
+                        "hostname devclient02.labs.com\n",
+			"cd ~ && wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb\n",
                         "dpkg -i puppetlabs-release-pc1-trusty.deb\n",
                         "apt-get update\n",
                         "apt-get -y install python-setuptools\n",
