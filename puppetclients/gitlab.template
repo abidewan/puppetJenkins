@@ -30,14 +30,14 @@
          "ConstraintDescription":"Must be a valid S3 Bucket"
       },
       "InstanceType":{
-         "Description":"DevClient01 EC2 instance type",
+         "Description":"DevClient03 EC2 instance type",
          "Type":"String",
          "Default":"t2.micro",
          "ConstraintDescription":"Must be a valid EC2 instance type."
       }
    },
    "Resources":{
-      "DevClient01":{
+      "DevClient03":{
          "Type":"AWS::EC2::Instance",
          "Metadata":{
             "AWS::CloudFormation::Init":{
@@ -70,7 +70,7 @@
                                  "[main]\n",
                                  "server = puppet\n",
                                  "environment = development\n",
-                                 "runinterval = 1h\n",
+                                 "runinterval = 1m\n",
                                  "strict_variables = true\n\n",
                                  "[master]\n",
                                  "vardir = /opt/puppetlabs/server/data/puppetserver\n",
@@ -84,12 +84,28 @@
                         "mode":"000755",
                         "owner":"root",
                         "group":"root"
+                     },
+                      "/etc/environment":{
+                        "content":{
+                           "Fn::Join":[
+                              "",
+                              [
+                                 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/opt/puppetlabs/bin\n"
+                                 
+                              ]
+                           ]
+                        },
+                        "mode":"000755",
+                        "owner":"root",
+                        "group":"root"
                      }
                   },
                   "services":{
+                     "sysvinit":{ 
                      "puppet":{
                         "enabled":"true",
                         "ensureRunning":"true"
+                       }
                      }
                   }
                }
@@ -118,7 +134,7 @@
             "Tags":[
                {
                   "Key":"Name",
-                  "Value":"DevClient01"
+                  "Value":"DevClient03"
                }
             ],
             "UserData":{
@@ -127,10 +143,10 @@
                      "",
                      [
                         "#!/bin/bash -ex\n",
-                        "echo 127.0.0.1 devclient02 devclient02.labs.com >> /etc/hosts\n",
-                        "echo devclient02 devclient02.labs.com/etc/hostname\n",
-                        "echo 172.31.34.130 puppet puppet.labs.com>>/etc/hostname\n",
-                        "hostname devclient02.labs.com\n",
+                        "echo 127.0.0.1 devclient03 devclient03.ap-southeast-2.compute.internal >> /etc/hosts\n",
+                        "echo devclient03 devclient03.ap-southeast-2.compute.internal>/etc/hostname\n",
+                        "echo 172.31.34.130 puppet puppet.ap-southeast-2.compute.internal>>/etc/hosts\n",
+                        "hostname devclient03.labs.com\n",
                         "mkdir ~/.aws\n",
                         "touch ~/.aws/conf\n",
                         "echo [default]>>~/.aws/conf\n",
@@ -147,7 +163,7 @@
                         {
                            "Ref":"AWS::StackName"
                         },
-                        " --resource DevClient01",
+                        " --resource DevClient03",
                         " --region ",
                         {
                            "Ref":"AWS::Region"
