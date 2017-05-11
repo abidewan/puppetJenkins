@@ -1,6 +1,6 @@
 {
    "AWSTemplateFormatVersion":"2010-09-09",
-   "Description":"CFT provision a puppetclient and gitlab",
+   "Description":"CFT provision a puppetclient",
    "Parameters":{
       "KeyName":{
          "Description":"Name of an existing EC2 KeyPair to enable SSH access to the instances",
