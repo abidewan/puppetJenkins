@@ -1,6 +1,6 @@
 {
    "AWSTemplateFormatVersion":"2010-09-09",
-   "Description":"CFT provision a puppetclient",
+   "Description":"CFT provision a puppetclient for a demo to Ankit",
    "Parameters":{
       "KeyName":{
          "Description":"Name of an existing EC2 KeyPair to enable SSH access to the instances",
@@ -134,7 +134,7 @@
             "Tags":[
                {
                   "Key":"Name",
-                  "Value":"DevClient04"
+                  "Value":"DevAnkit05"
                }
             ],
             "UserData":{
