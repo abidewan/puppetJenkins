@@ -134,7 +134,7 @@
             "Tags":[
                {
                   "Key":"Name",
-                  "Value":"DevClient03"
+                  "Value":"DevClient04"
                }
             ],
             "UserData":{
@@ -143,10 +143,6 @@
                      "",
                      [
                         "#!/bin/bash -ex\n",
-                        "echo 127.0.0.1 devclient03 devclient03.ap-southeast-2.compute.internal >> /etc/hosts\n",
-                        "echo devclient03 devclient03.ap-southeast-2.compute.internal>/etc/hostname\n",
-                        "echo 172.31.34.130 puppet puppet.ap-southeast-2.compute.internal>>/etc/hosts\n",
-                        "hostname devclient03.labs.com\n",
                         "mkdir ~/.aws\n",
                         "touch ~/.aws/conf\n",
                         "echo [default]>>~/.aws/conf\n",
