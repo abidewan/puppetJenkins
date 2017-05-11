@@ -143,7 +143,7 @@
                      "",
                      [
                         "#!/bin/bash -ex\n",
-			"echo 172.31.34.130 puppet>>/etc/hosts"
+			"echo 172.31.34.130 puppet>>/etc/hosts\n",
                         "mkdir ~/.aws\n",
                         "touch ~/.aws/conf\n",
                         "echo [default]>>~/.aws/conf\n",
